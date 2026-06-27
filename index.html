@@ -1,1 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conexión de Claude AI a Power BI (MCP) — Tutorial de Instalación</title>
+<style>
+  :root {
+    --accent: #6A0DAD;
+    --accent-light: #F5F0FF;
+    --accent-mid: #9B59B6;
+    --green: #1a7a4a;
+    --green-bg: #e6f9f0;
+    --red: #c0142d;
+    --red-bg: #fce8ec;
+    --yellow: #7a5c00;
+    --yellow-bg: #fff8e1;
+    --blue: #1565C0;
+    --blue-bg: #E3F2FD;
+    --gray: #6b7280;
+    --border: #e5e7eb;
+    --code-bg: #f8f7ff;
+    --text: #1f2937;
+  }
 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--text);
+    background: #fff;
+  }
+
+  /* ─── Portada ─── */
+  .cover {
+    background: linear-gradient(135deg, var(--accent) 0%, #9B59B6 60%, #C39BD3 100%);
+    color: white;
+    padding: 70px 60px 60px;
+    page-break-after: always;
+  }
+  .cover h1 {
+    font-size: 34px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .cover p {
+    font-size: 16px;
+    opacity: 0.9;
+    max-width: 600px;
+    margin-bottom: 8px;
+  }
+  .cover .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    margin-top: 24px;
+    margin-right: 8px;
+  }
+
+  /* ─── TOC ─── */
+  .toc {
+    padding: 50px 60px;
+    page-break-after: always;
+    border-bottom: 1px solid var(--border);
+  }
+  .toc h2 { font-size: 22px; color: var(--accent); margin-bottom: 20px; }
+  .toc ol { padding-left: 22px; }
+  .toc li { margin: 6px 0; font-size: 14px; }
+  .toc a { color: var(--accent); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+
+  /* ─── Layout general ─── */
+  .content { padding: 0 60px 60px; max-width: 900px; margin: 0 auto; }
+
+  /* ─── Secciones ─── */
+  section { margin-bottom: 56px; page-break-inside: avoid; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 0 14px;
+    border-bottom: 3px solid var(--accent);
+    margin-bottom: 28px;
+  }
+  .section-number {
+    background: var(--accent);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-size: 22px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 28px 0 12px;
+    padding-left: 12px;
+    border-left: 3px solid var(--accent-mid);
+  }
+
+  p { margin-bottom: 12px; }
+  ul, ol { padding-left: 22px; margin-bottom: 12px; }
+  li { margin-bottom: 5px; }
+
+  /* ─── Cajas especiales ─── */
+  .box {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 18px 0;
+  }
+  .box-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 8px;
+  }
+  .info  { background: var(--blue-bg);   border-left: 4px solid var(--blue);  }
+  .info  .box-title { color: var(--blue); }
+  .warn  { background: var(--yellow-bg); border-left: 4px solid #f59e0b; }
+  .warn  .box-title { color: var(--yellow); }
+  .tip   { background: var(--green-bg);  border-left: 4px solid var(--green); }
+  .tip   .box-title { color: var(--green); }
+  .error { background: var(--red-bg);    border-left: 4px solid var(--red);   }
+  .error .box-title { color: var(--red); }
+  .purple { background: var(--accent-light); border-left: 4px solid var(--accent); }
+  .purple .box-title { color: var(--accent); }
+
+  /* ─── Código ─── */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid #ddd5f5;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-size: 12.5px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    overflow-x: auto;
+    margin: 14px 0;
+    line-height: 1.6;
+  }
+  code {
+    font-family: 'Consolas', 'Courier New', monospace;
+    background: var(--code-bg);
+    border: 1px solid #ddd5f5;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 12.5px;
+  }
+
+  /* ─── Steps numerados ─── */
+  .steps { counter-reset: step-counter; }
+  .step {
+    counter-increment: step-counter;
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    background: var(--accent-light);
+    color: var(--accent);
+    border: 2px solid var(--accent-mid);
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    margin-top: 2px;
+  }
+  .step-content {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+  .step-content h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--accent);
+  }
+
+  /* ─── Tabla ─── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13.5px;
+  }
+  th {
+    background: var(--accent);
+    color: white;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+  td { padding: 9px 14px; border-bottom: 1px solid var(--border); }
+  tr:nth-child(even) td { background: #faf8ff; }
+
+  /* ─── Print ─── */
+  @media print {
+    .cover { page-break-after: always; }
+    .toc   { page-break-after: always; }
+    section { page-break-inside: avoid; }
+    a { color: var(--accent); text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <h1>Conexión de Claude AI<br>a Power BI Desktop</h1>
+  <p>Guía de instalación y configuración del servidor MCP</p>
+  <p>Aprende a conectar el chat normal de Claude Desktop a tus informes para generar DAX y automatizar tareas de modelado de datos mediante lenguaje natural.</p>
+  <br>
+  <span class="badge">Power BI Desktop</span>
+  <span class="badge">Claude Desktop</span>
+  <span class="badge">VS Code</span>
+  <span class="badge">MCP Server</span>
+</div>
+
+<div class="toc">
+  <h2>Contenido</h2>
+  <ol>
+    <li><a href="#sec1">¿Qué permite esta integración?</a></li>
+    <li><a href="#sec2">Prerrequisitos de software</a></li>
+    <li><a href="#sec3">Instalación y extracción del Servidor MCP</a></li>
+    <li><a href="#sec4">Configuración en Claude Desktop</a></li>
+    <li><a href="#sec5">Tecnologías de apoyo</a></li>
+    <li><a href="#sec6">Las 7 Etapas del Flujo de Trabajo</a></li>
+    <li><a href="#sec7">Skills Instalables para Claude</a></li>
+    <li><a href="#sec8">Checklist de Sesión</a></li>
+  </ol>
+</div>
+
+<div class="content">
+
+<section id="sec1">
+  <div class="section-header">
+    <div class="section-number">1</div>
+    <h2>¿Qué permite esta integración?</h2>
+  </div>
+
+  <p>El protocolo MCP (Model Context Protocol) actúa como un puente directo entre el chat estándar de <strong>Claude Desktop</strong> y tu archivo abierto en <strong>Power BI Desktop</strong>. En lugar de escribir código a mano o copiar y pegar, Claude se conecta localmente a tu modelo para crear tablas, medidas DAX y establecer relaciones de forma automática.</p>
+
+  <div class="box purple">
+    <div class="box-title">Ejemplo de uso en un inicio</div>
+    <p>"Con tu informe abierto, le dices a Claude desde el chat: Vamos a empezar un nuevo Dashboard usando una metodología en el archivo que tengo abierto de PowerBI, así que, conéctate a el."</p>
+    <p>Claude recibe la instrucción y se conecta automáticamente al archivo de PowerBI</p>
+  </div>
+
+  <div class="box purple">
+    <div class="box-title">Ejemplo de uso en un proyecto real</div>
+    <p>"Con tu informe abierto ya con las tablas de datos insertadas, le dices a Claude desde el chat: Crea una medida DAX que calcule una tendencia mostrando el crecimiento real de tickets por mes."</p>
+    <p>Claude recibe la instrucción, lee el esquema de tus tablas actuales en Power BI y resuelve directamente en tu modelo sin que tengas que tocar el editor avanzado.</p>
+  </div>
+</section>
+
+<section id="sec2">
+  <div class="section-header">
+    <div class="section-number">2</div>
+    <h2>Prerrequisitos de software</h2>
+  </div>
+
+  <p>Para establecer este puente de comunicación, necesitaremos instalar dos programas base. Las instalaciones pueden hacerse con las opciones por defecto.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Claude Desktop</h4>
+        <p>Descarga la aplicación nativa de escritorio desde la página oficial de Anthropic. <strong>Nota importante:</strong> Aunque la versión gratuita funciona, es sumamente recomendable utilizar la versión de pago (Claude Pro), ya que la versión gratuita tiene límites de créditos estrictos que se consumirán rápidamente al enviarle esquemas completos de bases de datos a la IA.</p>
+      </div>
+    </div>
+    
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Visual Studio Code (VS Code)</h4>
+        <p>Descarga el editor de código gratuito de Microsoft. <strong>Ojo:</strong> No vamos a programar en VS Code ni le daremos instrucciones desde allí. Solo lo utilizaremos como vehículo para instalar la extensión del servidor MCP en nuestra computadora.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sec3">
+  <div class="section-header">
+    <div class="section-number">3</div>
+    <h2>Instalación y extracción del Servidor MCP</h2>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Instalar la extensión en VS Code</h4>
+        <p>Abre Visual Studio Code y dirígete al panel izquierdo en el ícono de <strong>Extensiones</strong> (o presiona <code>Ctrl+Shift+X</code>).</p>
+        <p>En el buscador escribe <strong>MCP</strong>. Busca la extensión <em>Power BI Modeling MCP</em> y asegúrate de que el proveedor oficial sea <strong>Microsoft</strong>. Haz clic en instalar. Una vez que termine, puedes cerrar VS Code completamente.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Extraer la ruta del servidor</h4>
+        <p>Abre tu explorador de archivos en Windows. En la barra superior de búsqueda, escribe exactamente lo siguiente y presiona Enter:</p>
+        <pre>%userprofile%</pre>
+        <p>Navega a través de las siguientes carpetas:</p>
+        <ol>
+          <li>Abre la carpeta <code>.vscode</code></li>
+          <li>Entra a <code>extensions</code></li>
+          <li>Busca la carpeta de la extensión instalada (suele llamarse <code>analysis-services.powerbi-modeling-mcp...</code>)</li>
+          <li>Entra a <code>server</code></li>
+        </ol>
+        <p>Allí encontrarás un archivo ejecutable llamado <strong>PowerBI_Modeling_MCP</strong> (o un nombre similar dependiendo de la versión). Haz clic derecho sobre él y selecciona la opción <strong>"Copiar como ruta de acceso"</strong>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sec4">
+  <div class="section-header">
+    <div class="section-number">4</div>
+    <h2>Configuración en Claude Desktop</h2>
+  </div>
+
+  <p>Ahora le indicaremos a Claude dónde se encuentra este servidor para que pueda ejecutarlo y conectarse a Power BI.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Abrir el archivo de Ajustes</h4>
+        <p>Abre <strong>Claude Desktop</strong>. Ve a tu perfil en la esquina superior y selecciona el menú de <strong>Ajustes</strong>.</p>
+        <p>En el panel izquierdo, baja hasta la sección que dice <strong>Desarrollador</strong>. Haz clic en el botón para editar la configuración de MCP. Esto abrirá un archivo <code>claude_desktop_config.json</code> en tu Bloc de Notas.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Inyectar el código y formatear la ruta</h4>
+        <p>Reemplaza el contenido del Bloc de Notas con la estructura base del MCP de Power BI, pero deberás pegar la ruta que copiaste en el paso anterior en la propiedad "command". Tu archivo debería quedar similar a esto:</p>
+        <pre>{
+  "mcpServers": {
+    "powerbi-modeling-mcp": {
+      "command": "C:\\Users\\TuUsuario\\.vscode\\extensions\\analysis-services.powerbi-modeling-mcp-0.4.0-win32-x64\\server\\PowerBI_Modeling_MCP.exe",
+      "args": ["--start"],
+      "env": {}
+    }
+  }
+}</pre>
+        <div class="box warn">
+          <div class="box-title">Importante: Las dobles barras</div>
+          Cuando copies tu ruta, Windows usará barras simples (<code>\</code>). Para que el archivo JSON sea válido, debes presionar <code>Ctrl+H</code> en el Bloc de Notas y reemplazar todas las barras simples (<code>\</code>) por barras dobles (<code>\\</code>). Guarda los cambios en el archivo y ciérralo.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>Reiniciar y Validar</h4>
+        <p>Es indispensable reiniciar la aplicación de Claude. <strong>No basta con cerrar la ventana.</strong> Ve a la barra de tareas de Windows (cerca del reloj), haz clic derecho en el ícono de Claude y selecciona <strong>Salir</strong>.</p>
+        <p>Vuelve a abrir Claude Desktop, entra de nuevo a <strong>Ajustes > Desarrollador</strong> y revisa el estatus. Debería indicar que el servidor MCP se ha conectado y está corriendo exitosamente.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sec5">
+  <div class="section-header">
+    <div class="section-number">5</div>
+    <h2>Tecnologías de apoyo</h2>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Power BI MCP</h4>
+        <p>Conexión directa al modelo semántico abierto. Claude puede leer
+tablas, medidas, relaciones y crear/modificar medidas DAX sin
+intervención manual.</p>
+      </div>
+    </div>
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-content">
+    <h4>Deneb (Vega-Lite)</h4>
+    <p>Motor de visualización declarativa que permite gráficas imposibles
+    con visuals nativos: degradados, anotaciones condicionales,
+    microcharts, layouts custom.</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">3</div>
+  <div class="step-content">
+    <h4>HTML Content</h4>
+    <p>Tarjetas KPI, tablas con formato avanzado e iconografía dinámica
+    construidas con HTML/CSS puro, reactivas al contexto de filtro de
+    Power BI.</p>
+  </div>
+</div>
+  </div>
+</section>
+
+<section id="sec6">
+  <div class="section-header">
+    <div class="section-number">6</div>
+    <h2>Las 7 Etapas del Flujo de Trabajo</h2>
+  </div>
+
+  <p>El flujo está dividido en 7 etapas. Las etapas 1-5 son colaborativas (Claude + Analista). Las etapas 6-7 son del Analista con Claude en modo soporte.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Ingesta y diagnóstico de datos</h4>
+        <p>Claude realiza un análisis automático antes de cualquier construcción. Revisa tipos de columnas, nulos, duplicados y outliers. Identifica dimensiones candidatas y hechos. Por último, señala problemas de calidad que deben resolverse antes de modelar.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Intención del dashboard</h4>
+        <p>Esta es la etapa más importante del flujo. Lo que el analista declare como objetivo del dashboard es mandatorio. Claude acata la intención y construye todo en función de ella.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>Diseño del modelo semántico</h4>
+        <p>El modelo se diseña para servir los KPIs mandatorios de la Etapa 2[cite: 58]. Claude se conecta al modelo abierto en Power BI Desktop para confirmar que el esquema coincide con lo diseñado y detectar particiones sin datos.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>Construcción de medidas DAX</h4>
+        <p>Claude escribe y sube las medidas directamente al modelo abierto via MCP. Las medidas se construyen en el orden dictado por la intención declarada en Etapa 2.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <h4>Diseño de visuales y estilo</h4>
+        <p>El diseño sigue una jerarquía clara: primero la intención del analista, luego el criterio de Claude.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-content">
+        <h4>Layout y publicación</h4>
+        <p>Esta etapa queda a cargo del analista. Claude entrega una guía de layout específica para el dashboard construido, no genérica.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">7</div>
+      <div class="step-content">
+        <h4>Revisión y correcciones</h4>
+        <p>Una vez que el analista tiene el dashboard armado en el canvas, Claude queda en modo de soporte activo para correcciones.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sec7">
+  <div class="section-header">
+    <div class="section-number">7</div>
+    <h2>Skills Instalables para Claude</h2>
+  </div>
+
+  <p>Las siguientes skills pueden instalarse en Claude para automatizar partes específicas de esta metodología.</p>
+
+  <table>
+    <tr>
+      <th>Skill</th>
+      <th>Descripción</th>
+    </tr>
+    <tr>
+      <td><strong>powerbi-dashboard-builder</strong></td>
+      <td>Skill principal. Orquesta las etapas 1-5. Conecta al modelo abierto via MCP automáticamente.</td>
+    </tr>
+    <tr>
+      <td><strong>deneb-chart-generator</strong></td>
+      <td>Genera specs de Vega-Lite para Deneb a partir de una descripción o imagen de referencia.</td>
+    </tr>
+    <tr>
+      <td><strong>html-kpi-cards</strong></td>
+      <td>Construye medidas DAX de tipo HTML Content para tarjetas KPI y badges de estado.</td>
+    </tr>
+    <tr>
+      <td><strong>powerbi-dax-auditor</strong></td>
+      <td>Audita el modelo en busca de problemas (blanks, medidas huérfanas) y propone correcciones.</td>
+    </tr>
+  </table>
+  
+  <h3>Cómo instalar las skills:</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Ir a la configuración de Claude</h4>
+        <p>Abre la aplicación de Claude Desktop y dirígete al menú principal. Haz clic en la opción <strong>Customize</strong> (Personalizar).</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Crear nuevas habilidades</h4>
+        <p>Dentro del menú Customize, selecciona la opción <strong>Crear nuevas habilidades</strong> (Create new skills).</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>Desplegar menú de creación</h4>
+        <p>En el panel izquierdo, haz clic en el ícono de <strong>más (+)</strong> que se encuentra junto a la barra de búsqueda de Habilidades. Luego, selecciona <strong>Crear habilidad</strong> (Create skill).</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>Subir la habilidad</h4>
+        <p>En el menú desplegable, selecciona la opción <strong>Subir una habilidad</strong> (Upload a skill).</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <h4>Cargar el archivo</h4>
+        <p>Se abrirá una ventana. Aquí deberás <strong>arrastrar y soltar</strong> o hacer clic para cargar los archivos correspondientes a las *skills* (<code>.md</code>, <code>.zip</code> o <code>.skill</code>). Repite el proceso para cada una de las 4 skills.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sec8">
+  <div class="section-header">
+    <div class="section-number">8</div>
+    <h2>Checklist de Sesión</h2>
+  </div>
+
+  <p>Usar este checklist al iniciar cada nuevo proyecto de dashboard:</p>
+
+  <ul>
+    <li><strong>Datos recibidos:</strong> CSV, Excel o conexión directa a BD disponible.</li>
+    <li><strong>Power BI Desktop abierto:</strong> Archivo.pbix abierto para conexión MCP.</li>
+    <li><strong>Intención del dashboard declarada:</strong> El analista definió el objetivo principal y los KPIs mandatorios.</li>
+    <li><strong>Referencia de diseño (opcional):</strong> Captura, paleta o descripción de estilo. Si no se da, Claude decide.</li>
+    <li><strong>Audiencia del dashboard:</strong> ¿Quién lo usa? ¿Con qué frecuencia?.</li>
+    <li><strong>Fuente de datos confirmada:</strong> Ruta local o conexión a servidor validada.</li>
+    <li><strong>Granularidad temporal definida:</strong> ¿Diario, semanal, mensual?.</li>
+    <li><strong>Fechas del período de análisis:</strong> Rango histórico disponible.</li>
+    <li><strong>Etapa 7 activada (si aplica):</strong> El analista puede pedir correcciones en cualquier momento después del layout.</li>
+  </ul>
+</section>
+
+</div><div style="background:#f8f7ff; border-top:3px solid #6A0DAD; padding:24px 60px; font-size:12px; color:#6b7280; margin-top:40px;">
+  Guía de Conexión PBI-MCP &nbsp;
+</div>
+
+</body>
+</html>
