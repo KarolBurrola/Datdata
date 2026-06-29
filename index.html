@@ -33,7 +33,6 @@
     background: #fff;
   }
 
-  /* ─── Portada ─── */
   .cover {
     background: linear-gradient(135deg, var(--accent) 0%, #9B59B6 60%, #C39BD3 100%);
     color: white;
@@ -63,7 +62,6 @@
     margin-right: 8px;
   }
 
-  /* ─── TOC ─── */
   .toc {
     padding: 50px 60px;
     page-break-after: always;
@@ -75,10 +73,8 @@
   .toc a { color: var(--accent); text-decoration: none; }
   .toc a:hover { text-decoration: underline; }
 
-  /* ─── Layout general ─── */
   .content { padding: 0 60px 60px; max-width: 900px; margin: 0 auto; }
 
-  /* ─── Secciones ─── */
   section { margin-bottom: 56px; page-break-inside: avoid; }
 
   .section-header {
@@ -121,7 +117,6 @@
   ul, ol { padding-left: 22px; margin-bottom: 12px; }
   li { margin-bottom: 5px; }
 
-  /* ─── Cajas especiales ─── */
   .box {
     border-radius: 10px;
     padding: 16px 20px;
@@ -145,7 +140,6 @@
   .purple { background: var(--accent-light); border-left: 4px solid var(--accent); }
   .purple .box-title { color: var(--accent); }
 
-  /* ─── Código ─── */
   pre {
     background: var(--code-bg);
     border: 1px solid #ddd5f5;
@@ -166,7 +160,6 @@
     font-size: 12.5px;
   }
 
-  /* ─── Steps numerados ─── */
   .steps { counter-reset: step-counter; }
   .step {
     counter-increment: step-counter;
@@ -204,7 +197,6 @@
     color: var(--accent);
   }
 
-  /* ─── Tabla ─── */
   table {
     width: 100%;
     border-collapse: collapse;
@@ -221,7 +213,6 @@
   td { padding: 9px 14px; border-bottom: 1px solid var(--border); }
   tr:nth-child(even) td { background: #faf8ff; }
 
-  /* ─── Print ─── */
   @media print {
     .cover { page-break-after: always; }
     .toc   { page-break-after: always; }
@@ -320,6 +311,7 @@
         <h4>Instalar la extensión en VS Code</h4>
         <p>Abre Visual Studio Code y dirígete al panel izquierdo en el ícono de <strong>Extensiones</strong> (o presiona <code>Ctrl+Shift+X</code>).</p>
         <p>En el buscador escribe <strong>MCP</strong>. Busca la extensión <em>Power BI Modeling MCP</em> y asegúrate de que el proveedor oficial sea <strong>Microsoft</strong>. Haz clic en instalar. Una vez que termine, puedes cerrar VS Code completamente.</p>
+        <img src="img/img1.png" alt="Captura del paso 1" style="max-width: 100%; border-radius: 8px; margin-top: 10px; border: 1px solid var(--border);">
       </div>
     </div>
 
