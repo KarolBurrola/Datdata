@@ -241,9 +241,9 @@
     <li><a href="#sec2">Prerrequisitos de software</a></li>
     <li><a href="#sec3">Instalación y extracción del Servidor MCP</a></li>
     <li><a href="#sec4">Configuración en Claude Desktop</a></li>
-    <li><a href="#sec5">Tecnologías de apoyo</a></li>
-    <li><a href="#sec6">Las 7 Etapas del Flujo de Trabajo</a></li>
-    <li><a href="#sec7">Skills Instalables para Claude</a></li>
+    <li><a href="#sec5">Skills Instalables para Claude</a></li>
+    <li><a href="#sec6">Tecnologías de apoyo</a></li>
+    <li><a href="#sec7">Las 7 Etapas del Flujo de Trabajo</a></li>
     <li><a href="#sec8">Checklist de Sesión</a></li>
   </ol>
 </div>
@@ -361,7 +361,7 @@
       <div class="step-num">2</div>
       <div class="step-content">
         <h4>Inyectar el código y formatear la ruta</h4>
-        <p>Reemplaza el contenido del Bloc de Notas con la estructura base del MCP de Power BI, pero deberás pegar la ruta que copiaste en el paso anterior en la propiedad "command". Tu archivo debería quedar similar a esto:</p>
+        <p>Reemplaza el contenido del Bloc de Notas con la structure base del MCP de Power BI, pero deberás pegar la ruta que copiaste en el paso anterior en la propiedad "command". Tu archivo debería quedar similar a esto:</p>
         <pre>{
   "mcpServers": {
     "powerbi-modeling-mcp": {
@@ -392,111 +392,6 @@
 <section id="sec5">
   <div class="section-header">
     <div class="section-number">5</div>
-    <h2>Tecnologías de apoyo</h2>
-  </div>
-
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <h4>Power BI MCP</h4>
-        <p>Conexión directa al modelo semántico abierto. Claude puede leer
-tablas, medidas, relaciones y crear/modificar medidas DAX sin
-intervención manual.</p>
-      </div>
-    </div>
-<div class="step">
-  <div class="step-num">2</div>
-  <div class="step-content">
-    <h4>Deneb (Vega-Lite)</h4>
-    <p>Motor de visualización declarativa que permite gráficas imposibles
-    con visuals nativos: degradados, anotaciones condicionales,
-    microcharts, layouts custom.</p>
-  </div>
-</div>
-
-<div class="step">
-  <div class="step-num">3</div>
-  <div class="step-content">
-    <h4>HTML Content</h4>
-    <p>Tarjetas KPI, tablas con formato avanzado e iconografía dinámica
-    construidas con HTML/CSS puro, reactivas al contexto de filtro de
-    Power BI.</p>
-  </div>
-</div>
-  </div>
-</section>
-
-<section id="sec6">
-  <div class="section-header">
-    <div class="section-number">6</div>
-    <h2>Las 7 Etapas del Flujo de Trabajo</h2>
-  </div>
-
-  <p>El flujo está dividido en 7 etapas. Las etapas 1-5 son colaborativas (Claude + Analista). Las etapas 6-7 son del Analista con Claude en modo soporte.</p>
-
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <h4>Ingesta y diagnóstico de datos</h4>
-        <p>Claude realiza un análisis automático antes de cualquier construcción. Revisa tipos de columnas, nulos, duplicados y outliers. Identifica dimensiones candidatas y hechos. Por último, señala problemas de calidad que deben resolverse antes de modelar.</p>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <h4>Intención del dashboard</h4>
-        <p>Esta es la etapa más importante del flujo. Lo que el analista declare como objetivo del dashboard es mandatorio. Claude acata la intención y construye todo en función de ella.</p>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <h4>Diseño del modelo semántico</h4>
-        <p>El modelo se diseña para servir los KPIs mandatorios de la Etapa 2[cite: 58]. Claude se conecta al modelo abierto en Power BI Desktop para confirmar que el esquema coincide con lo diseñado y detectar particiones sin datos.</p>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">4</div>
-      <div class="step-content">
-        <h4>Construcción de medidas DAX</h4>
-        <p>Claude escribe y sube las medidas directamente al modelo abierto via MCP. Las medidas se construyen en el orden dictado por la intención declarada en Etapa 2.</p>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">5</div>
-      <div class="step-content">
-        <h4>Diseño de visuales y estilo</h4>
-        <p>El diseño sigue una jerarquía clara: primero la intención del analista, luego el criterio de Claude.</p>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">6</div>
-      <div class="step-content">
-        <h4>Layout y publicación</h4>
-        <p>Esta etapa queda a cargo del analista. Claude entrega una guía de layout específica para el dashboard construido, no genérica.</p>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">7</div>
-      <div class="step-content">
-        <h4>Revisión y correcciones</h4>
-        <p>Una vez que el analista tiene el dashboard armado en el canvas, Claude queda en modo de soporte activo para correcciones.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="sec7">
-  <div class="section-header">
-    <div class="section-number">7</div>
     <h2>Skills Instalables para Claude</h2>
   </div>
 
@@ -566,6 +461,111 @@ intervención manual.</p>
         <p>Se abrirá una ventana. Aquí deberás <strong>arrastrar y soltar</strong> o hacer clic para cargar los archivos correspondientes a las *skills* (<code>.md</code>, <code>.zip</code> o <code>.skill</code>). Repite el proceso para cada una de las 4 skills.</p>
         <img src="imgs/img9.png" alt="Captura del paso 9" style="max-width: 100%; border-radius: 8px; margin-top: 10px; border: 1px solid var(--border);">
 
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sec6">
+  <div class="section-header">
+    <div class="section-number">6</div>
+    <h2>Tecnologías de apoyo</h2>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Power BI MCP</h4>
+        <p>Conexión directa al modelo semántico abierto. Claude puede leer
+tablas, medidas, relaciones y crear/modificar medidas DAX sin
+intervención manual.</p>
+      </div>
+    </div>
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-content">
+    <h4>Deneb (Vega-Lite)</h4>
+    <p>Motor de visualización declarativa que permite gráficas imposibles
+    con visuals nativos: degradados, anotaciones condicionales,
+    microcharts, layouts custom.</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">3</div>
+  <div class="step-content">
+    <h4>HTML Content</h4>
+    <p>Tarjetas KPI, tablas con formato avanzado e iconografía dinámica
+    construidas con HTML/CSS puro, reactivas al contexto de filtro de
+    Power BI.</p>
+  </div>
+</div>
+  </div>
+</section>
+
+<section id="sec7">
+  <div class="section-header">
+    <div class="section-number">7</div>
+    <h2>Las 7 Etapas del Flujo de Trabajo</h2>
+  </div>
+
+  <p>El flujo está dividido en 7 etapas. Las etapas 1-5 son colaborativas (Claude + Analista). Las etapas 6-7 son del Analista con Claude en modo soporte.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Ingesta y diagnóstico de datos</h4>
+        <p>Claude realiza un análisis automático antes de cualquier construcción. Revisa tipos de columnas, nulos, duplicados y outliers. Identifica dimensiones candidatas y hechos. Por último, señala problemas de calidad que deben resolverse antes de modelar.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Intención del dashboard</h4>
+        <p>Esta es la etapa más importante del flujo. Lo que el analista declare como objetivo del dashboard es mandatorio. Claude acata la intención y construye todo en función de ella.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>Diseño del modelo semántico</h4>
+        <p>El modelo se diseña para servir los KPIs mandatorios de la Etapa 2. Claude se conecta al modelo abierto en Power BI Desktop para confirmar que el esquema coincide con lo diseñado y detectar particiones sin datos.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>Construcción de medidas DAX</h4>
+        <p>Claude escribe y sube las medidas directamente al modelo abierto via MCP. Las medidas se construyen en el orden dictado por la intención declarada en Etapa 2.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <h4>Diseño de visuales y estilo</h4>
+        <p>El diseño sigue una jerarquía clara: primero la intención del analista, luego el criterio de Claude.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-content">
+        <h4>Layout y publicación</h4>
+        <p>Esta etapa queda a cargo del analista. Claude entrega una guía de layout específica para el dashboard construido, no genérica.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">7</div>
+      <div class="step-content">
+        <h4>Revisión y correcciones</h4>
+        <p>Una vez que el analista tiene el dashboard armado en el canvas, Claude queda en modo de soporte activo para correcciones.</p>
       </div>
     </div>
   </div>
